@@ -31,6 +31,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.util.StringValueResolver;
 
 /**
+ * 用ConcurrentHashMap(高并发线程安全)来做Alias存储，实现了AliasRegistry接口的方法
+ * Alias的存储方式是key-alias，value-name;
  * Simple implementation of the {@link AliasRegistry} interface.
  *
  * <p>Serves as base class for
@@ -68,6 +70,8 @@ public class SimpleAliasRegistry implements AliasRegistry {
 						// An existing alias - no need to re-register
 						return;
 					}
+					//默认情况下给一个name注册一个已经存在的alias且已经注册了的registeredName和name不相同，
+					//新注册的alias的name会覆盖掉原来的registeredName
 					if (!allowAliasOverriding()) {
 						throw new IllegalStateException("Cannot define alias '" + alias + "' for name '" +
 								name + "': It is already registered for name '" + registeredName + "'.");
@@ -186,6 +190,7 @@ public class SimpleAliasRegistry implements AliasRegistry {
 	}
 
 	/**
+	 * 检查name和alias是否是循环注册
 	 * Check whether the given name points back to the given alias as an alias
 	 * in the other direction already, catching a circular reference upfront
 	 * and throwing a corresponding IllegalStateException.
