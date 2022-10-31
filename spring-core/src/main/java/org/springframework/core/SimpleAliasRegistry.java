@@ -149,6 +149,7 @@ public class SimpleAliasRegistry implements AliasRegistry {
 	}
 
 	/**
+	 * 对Map的所有alias和name都做解析，解析后判断处理映射关系
 	 * Resolve all alias target names and aliases registered in this
 	 * registry, applying the given {@link StringValueResolver} to them.
 	 * <p>The value resolver may for example resolve placeholders
@@ -208,6 +209,7 @@ public class SimpleAliasRegistry implements AliasRegistry {
 	}
 
 	/**
+	 * 通过循环查找，寻找到别名(name)的最终映射
 	 * Determine the raw name, resolving aliases to canonical names.
 	 * @param name the user-specified name
 	 * @return the transformed name

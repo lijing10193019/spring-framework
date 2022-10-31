@@ -19,6 +19,7 @@ package org.springframework.beans.factory.config;
 import org.springframework.lang.Nullable;
 
 /**
+ * SingletonBean注册 接口
  * Interface that defines a registry for shared bean instances.
  * Can be implemented by {@link org.springframework.beans.factory.BeanFactory}
  * implementations in order to expose their singleton management facility
@@ -35,6 +36,7 @@ import org.springframework.lang.Nullable;
 public interface SingletonBeanRegistry {
 
 	/**
+	 * 对singletonObject注册为名称为beanName的单例
 	 * Register the given existing object as singleton in the bean registry,
 	 * under the given bean name.
 	 * <p>The given instance is supposed to be fully initialized; the registry
@@ -58,6 +60,7 @@ public interface SingletonBeanRegistry {
 	void registerSingleton(String beanName, Object singletonObject);
 
 	/**
+	 * 在给定的beanName下获取注册的单例对象
 	 * Return the (raw) singleton object registered under the given name.
 	 * <p>Only checks already instantiated singletons; does not return an Object
 	 * for singleton bean definitions which have not been instantiated yet.
@@ -74,6 +77,7 @@ public interface SingletonBeanRegistry {
 	Object getSingleton(String beanName);
 
 	/**
+	 * 在给定beanName下检查是否存在对应的单例Bean
 	 * Check if this registry contains a singleton instance with the given name.
 	 * <p>Only checks already instantiated singletons; does not return {@code true}
 	 * for singleton bean definitions which have not been instantiated yet.
@@ -98,6 +102,7 @@ public interface SingletonBeanRegistry {
 	boolean containsSingleton(String beanName);
 
 	/**
+	 * 获取注册表的所有单例bean注册的名称
 	 * Return the names of singleton beans registered in this registry.
 	 * <p>Only checks already instantiated singletons; does not return names
 	 * for singleton bean definitions which have not been instantiated yet.
@@ -112,6 +117,7 @@ public interface SingletonBeanRegistry {
 	String[] getSingletonNames();
 
 	/**
+	 * 获取注册表中本注册的所有单例bean的总数
 	 * Return the number of singleton beans registered in this registry.
 	 * <p>Only checks already instantiated singletons; does not count
 	 * singleton bean definitions which have not been instantiated yet.
