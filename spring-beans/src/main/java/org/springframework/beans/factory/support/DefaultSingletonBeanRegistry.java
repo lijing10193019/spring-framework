@@ -74,15 +74,15 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	private static final int SUPPRESSED_EXCEPTIONS_LIMIT = 100;
 
 
-	/** 单例已经创建完毕的单体bean对象实例key-value存储 也称为三级缓存*/
+	/** 单例已经创建完毕的单体bean对象实例key-value存储 也称为一级缓存*/
 	/** Cache of singleton objects: bean name to bean instance. */
 	private final Map<String, Object> singletonObjects = new ConcurrentHashMap<>(256);
 
-	/** 存储创建单例bean对象实例的工厂对象实例*/
+	/** 存储创建单例bean对象实例的工厂对象实例 也称为三级缓存*/
 	/** Cache of singleton factories: bean name to ObjectFactory. */
 	private final Map<String, ObjectFactory<?>> singletonFactories = new HashMap<>(16);
 
-	/** 存储已经执行了构造函数但是没有给属性赋值的对象*/
+	/** 存储已经执行了构造函数但是没有给属性赋值的对象 也称为二级缓存*/
 	/** Cache of early singleton objects: bean name to bean instance. */
 	private final Map<String, Object> earlySingletonObjects = new ConcurrentHashMap<>(16);
 
@@ -124,7 +124,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 
 	/**
 	 * 名为beanName的单例实例注册
-	 * 1.检查实例在三级缓存中是否已经存在
+	 * 1.检查实例在一级缓存中是否已经存在
 	 * 2.存在exception，不存在注册
 	 * @param beanName the name of the bean
 	 * @param singletonObject the existing singleton object
@@ -147,8 +147,8 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 
 	/**
 	 * 将给定的单例实例添加到单例缓存中
-	 * 1.添加到三级缓存中
-	 * 2.移出单例工厂缓存
+	 * 1.添加到一级缓存中
+	 * 2.移出单例三级缓存
 	 * 3.移出二级缓存
 	 * 4.添加到单例名称set中
 	 * Add the given singleton object to the singleton cache of this factory.
@@ -166,6 +166,11 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	}
 
 	/**
+	 * 添加给定的单例工厂为创建知指定的单例
+	 * 1.如果singletonObjects没有beanName
+	 * 2.singletonFactories添加给定的单例工厂
+	 * 3.二级缓存中移出beanName单例
+	 * 4.单例bean名称缓存中添加给定单例名称
 	 * Add the given singleton factory for building the specified singleton
 	 * if necessary.
 	 * <p>To be called for eager registration of singletons, e.g. to be able to
